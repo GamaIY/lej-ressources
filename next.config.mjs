@@ -26,7 +26,9 @@ const enTetesSecurite = [
       "base-uri 'self'",
       "form-action 'self'",
       "frame-ancestors 'none'",
-      'upgrade-insecure-requests',
+      // Pas de 'upgrade-insecure-requests' : Strict-Transport-Security ci-dessous
+      // impose deja HTTPS sur tout le domaine, et cette directive empeche de
+      // tester le site en local, ou le serveur n'ecoute qu'en HTTP.
     ].join('; '),
   },
   // Empeche d'afficher le site dans une iframe : parade au clickjacking,

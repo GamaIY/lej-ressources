@@ -204,6 +204,21 @@ Demande par la direction. Conception retenue :
 - **Information des visiteurs** : la page `/confidentialite` detaille ce qui
   est collecte, pourquoi, combien de temps, et les droits RGPD.
 
+### Mode test, tant que le site n'est ouvert a personne
+
+Tant que tu es seul a consulter le site, le bandeau n'a pas d'interet : tu
+peux enregistrer toutes les visites automatiquement pour observer le trafic.
+
+Ajoute sur Vercel la variable
+`NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT` = `1`, puis redeploie. Le bandeau
+disparait, chaque visite est enregistree, et la page `/journal` affiche un
+avertissement rouge qui te le rappelle a chaque consultation.
+
+**Avant de communiquer l'adresse du site a qui que ce soit : supprime cette
+variable** (ne la mets pas a 0, supprime-la) et redeploie. Le bandeau revient
+et plus rien n'est enregistre sans accord. Le mode par defaut, sans variable,
+est celui qui demande le consentement : un oubli retombe du cote sur.
+
 ### A completer par l'etablissement
 
 La page de confidentialite contient un encadre a remplir : identite exacte du

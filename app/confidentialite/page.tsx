@@ -7,6 +7,7 @@ export const metadata = {
 };
 
 const contact = process.env.NEXT_PUBLIC_CONTACT_RGPD;
+const sansConsentement = process.env.NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT === '1';
 
 export default function ConfidentialitePage() {
   return (
@@ -26,7 +27,11 @@ export default function ConfidentialitePage() {
 
       <div className="prose mt-8">
         <h2>Ce qui est enregistre</h2>
-        <p>Si tu as clique sur &laquo;&nbsp;Accepter&nbsp;&raquo; dans le bandeau :</p>
+        <p>
+          {sansConsentement
+            ? "Le site est en phase de test et n'est ouvert a personne. Pendant cette periode, chaque visite est enregistree :"
+            : 'Si tu as clique sur « Accepter » dans le bandeau :'}
+        </p>
         <ul>
           <li>
             <strong>ton adresse IP</strong> — le numero que ton fournisseur d&apos;acces attribue a
@@ -44,13 +49,27 @@ export default function ConfidentialitePage() {
           publicitaire, pas de reseau social, pas de profil de navigation.
         </p>
 
-        <h2>Si tu refuses</h2>
-        <p>
-          Rien n&apos;est envoye et <strong>ton adresse IP n&apos;est jamais enregistree</strong>.
-          Le bouton &laquo;&nbsp;Refuser&nbsp;&raquo; n&apos;est pas un bouton de facade : la
-          requete qui transmet la visite n&apos;est tout simplement pas declenchee. Le site
-          fonctionne exactement pareil.
-        </p>
+        {sansConsentement ? (
+          <>
+            <h2>Phase de test</h2>
+            <p>
+              Le site n&apos;est pas encore ouvert et le choix d&apos;accepter ou de refuser
+              n&apos;est pas propose pour l&apos;instant. Il le sera avant toute mise a disposition
+              des eleves.
+            </p>
+          </>
+        ) : (
+          <>
+            <h2>Si tu refuses</h2>
+            <p>
+              Rien n&apos;est envoye et{' '}
+              <strong>ton adresse IP n&apos;est jamais enregistree</strong>. Le bouton
+              &laquo;&nbsp;Refuser&nbsp;&raquo; n&apos;est pas un bouton de facade : la requete qui
+              transmet la visite n&apos;est tout simplement pas declenchee. Le site fonctionne
+              exactement pareil.
+            </p>
+          </>
+        )}
 
         <h2>Combien de temps</h2>
         <p>

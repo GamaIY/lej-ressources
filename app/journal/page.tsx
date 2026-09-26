@@ -123,7 +123,31 @@ function Cadre({ children }: { children: React.ReactNode }) {
         Les 48 dernieres heures. Au-dela, les donnees sont supprimees automatiquement et ne sont
         recuperables nulle part.
       </p>
+      <ModeTest />
       {children}
+    </div>
+  );
+}
+
+/**
+ * Rappel affiche a chaque consultation tant que le mode test est actif.
+ * C'est le moment ou l'on y pense : celui ou l'on regarde les donnees.
+ */
+function ModeTest() {
+  if (process.env.NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT !== '1') return null;
+
+  return (
+    <div className="mb-8 rounded-2xl border-2 border-rose-400 bg-rose-50 p-5 text-sm text-rose-900 dark:border-rose-500/50 dark:bg-rose-500/10 dark:text-rose-200">
+      <h2 className="text-base font-semibold">Mode test : enregistrement sans consentement</h2>
+      <p className="mt-2">
+        Le bandeau est desactive et <strong>chaque visite est enregistree sans que le visiteur en
+        soit informe</strong>. C&apos;est acceptable tant que tu es seul a utiliser le site.
+      </p>
+      <p className="mt-2">
+        Avant de communiquer l&apos;adresse du site a qui que ce soit : supprime la variable{' '}
+        <code className="rounded bg-rose-500/20 px-1">NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT</code>{' '}
+        sur Vercel et redeploie. Le bandeau revient et plus rien n&apos;est enregistre sans accord.
+      </p>
     </div>
   );
 }

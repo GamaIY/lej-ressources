@@ -21,6 +21,17 @@ const COOKIE = 'lej-journal';
 const SIX_MOIS = 60 * 60 * 24 * 182;
 
 /**
+ * Mode test, active par NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT=1.
+ *
+ * Le bandeau disparait et chaque visite est enregistree sans rien demander.
+ * A n'utiliser que tant que le site n'est consulte par personne d'autre que
+ * toi : des qu'une autre personne y accede, retire la variable sur Vercel et
+ * redeploie. Le mode par defaut, sans variable, est celui qui demande
+ * l'accord — c'est volontaire : un oubli retombe du cote sur.
+ */
+const SANS_CONSENTEMENT = process.env.NEXT_PUBLIC_JOURNAL_SANS_CONSENTEMENT === '1';
+
+/**
  * La page d'administration ne se compte pas elle-meme : sinon chaque
  * consultation du journal par la direction gonfle les statistiques que ce
  * meme journal affiche, et y inscrit l'adresse de la direction.
@@ -59,7 +70,8 @@ export function BandeauConfidentialite() {
   }, []);
 
   useEffect(() => {
-    if (choix !== 'oui' || !chemin || estPageAdmin(chemin)) return;
+    if (!chemin || estPageAdmin(chemin)) return;
+    if (!SANS_CONSENTEMENT && choix !== 'oui') return;
 
     // La barre finale est obligatoire : next.config a trailingSlash, et sans
     // elle la requete part en redirection 308 avant d'arriver a la route.
@@ -81,6 +93,7 @@ export function BandeauConfidentialite() {
 
   // Inutile de demander son consentement a la direction sur une page qui,
   // justement, n'enregistre rien.
+  if (SANS_CONSENTEMENT) return null;
   if (!charge || choix !== null || estPageAdmin(chemin ?? '')) return null;
 
   return (
