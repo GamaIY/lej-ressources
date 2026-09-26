@@ -1,0 +1,13 @@
+Depose ici les PDF, images et documents a telecharger.
+
+Depuis une page Markdown, tu les references comme ceci :
+
+    fichiers:
+      - titre: Le cours complet (PDF)
+        lien: /fichiers/mon-fichier.pdf
+
+Le chemin commence toujours par /fichiers/ (sans "public" devant).
+
+Les fichiers actuellement presents sont des exemples generes
+automatiquement : remplace-les par les vrais, en gardant les memes noms,
+ou change les noms dans les fichiers .md correspondants.

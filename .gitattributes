@@ -1,0 +1,24 @@
+# Les fichiers texte sont normalises en LF dans le depot comme sur le disque.
+* text=auto eol=lf
+
+# Les documents ne doivent JAMAIS etre convertis : git les corromprait.
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.svg   text eol=lf
+*.zip   binary
+*.doc   binary
+*.docx  binary
+*.ppt   binary
+*.pptx  binary
+*.xls   binary
+*.xlsx  binary
+*.odt   binary
+*.mp4   binary
+*.mp3   binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
