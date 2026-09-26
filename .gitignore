@@ -7,3 +7,8 @@ build
 next-env.d.ts
 .DS_Store
 Thumbs.db
+
+# Secrets : mots de passe et jetons ne doivent jamais partir sur GitHub.
+.env
+.env.local
+.env.*.local

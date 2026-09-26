@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import Link from 'next/link';
+import { BandeauConfidentialite } from '@/components/BandeauConfidentialite';
 import './globals.css';
 
 const siteName = 'LEJ';
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <SiteHeader />
           <main className="flex-1">{children}</main>
           <SiteFooter />
+          <BandeauConfidentialite />
         </div>
       </body>
     </html>
@@ -71,7 +73,12 @@ function SiteFooter() {
     <footer className="border-t border-slate-200 py-8 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-500">
       <div className="mx-auto flex max-w-5xl flex-col gap-2 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <p>{siteName} — ressources partagees entre etudiants.</p>
-        <p className="text-xs">Site statique, heberge sur Vercel</p>
+        <Link
+          href="/confidentialite"
+          className="text-xs underline underline-offset-2 transition hover:text-slate-900 dark:hover:text-slate-200"
+        >
+          Confidentialite
+        </Link>
       </div>
     </footer>
   );

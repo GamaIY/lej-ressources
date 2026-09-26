@@ -3,9 +3,9 @@
 Site statique de partage de cours, syntheses, anciennes interrogations et
 examens. Chaque page est un fichier texte dans ce depot.
 
-**Aucune base de donnees, aucun compte, aucune variable d'environnement,
-aucune integration a brancher.** `next build` produit des fichiers HTML que
-Vercel sert tels quels.
+Les pages sont pre-generees au build : le site est quasi entierement
+statique. Seuls le journal des visites et sa page de consultation tournent
+cote serveur.
 
 Pour ajouter du contenu : tu ecris un fichier, tu le mets sur GitHub,
 Vercel redeploie tout seul en une trentaine de secondes.
@@ -185,6 +185,41 @@ components/            cartes, recherche, icones
 
 ---
 
+## Le journal des visites
+
+Demande par la direction. Conception retenue :
+
+- **Ce qui est enregistre** : adresse IP, page consultee, date et heure,
+  navigateur declare. Rien d'autre.
+- **Uniquement apres accord.** Le bandeau propose « Accepter » et
+  « Refuser ». Refuser n'envoie aucune requete au serveur : l'adresse IP
+  n'est alors ni vue ni stockee. Ce n'est pas un bandeau decoratif.
+- **48 heures, garanties par la base.** Chaque journee de visites recoit une
+  duree de vie de 48 h dans Redis, qui supprime tout seul. Il n'y a pas de
+  script de nettoyage qu'on pourrait oublier de lancer, et pas de sauvegarde
+  d'ou les donnees pourraient ressortir.
+- **Consultation** : `/journal`, protege par mot de passe
+  (identifiant `direction`, mot de passe = `JOURNAL_PASSWORD`). La page est
+  en `noindex` : elle n'apparaitra pas dans Google.
+- **Information des visiteurs** : la page `/confidentialite` detaille ce qui
+  est collecte, pourquoi, combien de temps, et les droits RGPD.
+
+### A completer par l'etablissement
+
+La page de confidentialite contient un encadre a remplir : identite exacte du
+responsable du traitement (l'ecole), son adresse, et le contact du delegue a
+la protection des donnees. Une adresse IP est une donnee personnelle au sens
+du RGPD, et le public de ce site comprend des mineurs : ces mentions ne sont
+pas optionnelles.
+
+Verifie aussi aupres du DPO de l'ecole que la finalite retenue
+(frequentation et securite) correspond bien a ce que la direction veut
+faire de ces donnees. Si le but est d'identifier individuellement des
+eleves, l'adresse IP est un outil a la fois peu fiable et juridiquement
+expose : une connexion partagee donne la meme adresse a toute une classe.
+
+---
+
 ## Ce que le site ne fait pas
 
 Il n'y a **pas de page d'administration** : ajouter du contenu passe
@@ -195,3 +230,19 @@ se charge instantanement.
 Si un jour tu veux deposer des fichiers depuis une page web plutot que depuis
 GitHub, il faudra rajouter un stockage (Vercel Blob) et une page protegee par
 mot de passe.
+
+---
+
+## Plus tard : la connexion Smartschool
+
+Rien n'est fait dans ce sens pour l'instant. Pour que les eleves se
+connectent avec leur compte Smartschool, il faut d'abord obtenir des acces
+cote ecole : Smartschool expose ses services aux etablissements, pas au
+public, et la demande passe par l'administrateur Smartschool de l'ecole
+(activation des webservices et delivrance d'une cle). C'est une demarche
+administrative, pas technique — autant la lancer des maintenant si la
+direction le souhaite, le developpement viendra apres.
+
+A prevoir a ce moment-la : une page de connexion, des sessions, et une
+reflexion sur ce qui devient reserve aux eleves connectes. Cela remet aussi
+sur la table la question des donnees personnelles, cette fois nominatives.
