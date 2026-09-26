@@ -20,6 +20,15 @@ import { useEffect, useState } from 'react';
 const COOKIE = 'lej-journal';
 const SIX_MOIS = 60 * 60 * 24 * 182;
 
+/**
+ * La page d'administration ne se compte pas elle-meme : sinon chaque
+ * consultation du journal par la direction gonfle les statistiques que ce
+ * meme journal affiche, et y inscrit l'adresse de la direction.
+ */
+function estPageAdmin(chemin: string): boolean {
+  return chemin.startsWith('/journal');
+}
+
 type Choix = 'oui' | 'non' | null;
 
 function lireChoix(): Choix {
@@ -50,7 +59,7 @@ export function BandeauConfidentialite() {
   }, []);
 
   useEffect(() => {
-    if (choix !== 'oui' || !chemin) return;
+    if (choix !== 'oui' || !chemin || estPageAdmin(chemin)) return;
 
     // La barre finale est obligatoire : next.config a trailingSlash, et sans
     // elle la requete part en redirection 308 avant d'arriver a la route.
@@ -70,7 +79,9 @@ export function BandeauConfidentialite() {
     setChoix(reponse);
   }
 
-  if (!charge || choix !== null) return null;
+  // Inutile de demander son consentement a la direction sur une page qui,
+  // justement, n'enregistre rien.
+  if (!charge || choix !== null || estPageAdmin(chemin ?? '')) return null;
 
   return (
     <div
